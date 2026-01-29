@@ -29,6 +29,7 @@ export const TodoFilter: React.FC = () => {
       <p className="control">
         <span className="select">
           <select
+            value={filter.status}
             data-cy="statusSelect"
             onChange={event => handleFilterChange(event.target.value as Status)}
           >

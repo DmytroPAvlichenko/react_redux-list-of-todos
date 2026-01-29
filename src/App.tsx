@@ -2,10 +2,10 @@ import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import { Loader, TodoFilter, TodoList, TodoModal } from './components';
 import { useEffect, useState } from 'react';
-import { getTodos } from './service/todo';
 import { useDispatch } from 'react-redux';
 import { actions as todosActions } from './features/todos';
 import { useAppSelector } from './app/hooks';
+import { getTodos } from './api';
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -13,12 +13,11 @@ export const App = () => {
   const currentTodo = useAppSelector(state => state.current);
 
   useEffect(() => {
-    getTodos().then(data => {
-      dispatch(todosActions.setTodos(data));
-    });
-    setTimeout(() => {
-      setLoader(false);
-    }, 300);
+    getTodos()
+      .then(data => {
+        dispatch(todosActions.setTodos(data));
+      })
+      .then(() => setLoader(false));
   }, []);
 
   return (

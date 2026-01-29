@@ -4,7 +4,7 @@ import { Todo } from '../../types/Todo';
 import { useDispatch } from 'react-redux';
 import { actions as currentActions } from '../../features/currentTodo';
 import { User } from '../../types/User';
-import { getUser } from '../../service/user';
+import { getUser } from '../../api';
 
 type Props = {
   todo: Todo;
@@ -15,10 +15,8 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setTimeout(() => {
-      getUser(todo.userId).then(setUser);
-    }, 100);
-  }, [todo]);
+    getUser(todo.userId).then(setUser);
+  }, [todo.userId]);
 
   return (
     <div className="modal is-active" data-cy="modal">
@@ -58,7 +56,7 @@ export const TodoModal: React.FC<Props> = ({ todo }) => {
               )}
 
               {' by '}
-              <a href="mailto:Sincere@april.biz">{user?.name}</a>
+              <a href="mailto:Sincere@april.biz">{user.name}</a>
             </p>
           </div>
         </div>

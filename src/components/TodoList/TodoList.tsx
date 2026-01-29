@@ -1,13 +1,15 @@
 /* eslint-disable */
 import React from 'react';
 import { useAppSelector } from '../../app/hooks';
-import { getTodo } from '../../service/todo';
 import { useDispatch } from 'react-redux';
 import { actions as currentActions } from '../../features/currentTodo';
 import { RootState } from '../../app/store';
 import { Status } from '../../types/Status';
+import { getUser } from '../../api';
+import { Todo } from '../../types/Todo';
 
-const filteredTodos = (state: RootState) => {
+
+const selectFilteredTodos = (state: RootState) => {
   const { query, status } = state.filter;
   let todos = state.todos;
 
@@ -31,15 +33,11 @@ const filteredTodos = (state: RootState) => {
 
 export const TodoList: React.FC = () => {
   const dispatch = useDispatch();
-  const state = useAppSelector(state => state);
+  const todos = useAppSelector(selectFilteredTodos);
   const currentTodo = useAppSelector(state => state.current);
 
-  const todos = filteredTodos(state);
-
-  const current = (todoId: number) => {
-    getTodo(todoId).then(data => {
-      dispatch(currentActions.setTodo(data));
-    });
+  const current = (todo: Todo) => {
+      dispatch(currentActions.setTodo(todo));
   };
 
   return (
@@ -98,7 +96,7 @@ export const TodoList: React.FC = () => {
                     data-cy="selectButton"
                     className="button"
                     type="button"
-                    onClick={() => current(todo.id)}
+                    onClick={() => current(todo)}
                   >
                     <span className="icon">
                       {currentTodo?.id === todo.id ? (
