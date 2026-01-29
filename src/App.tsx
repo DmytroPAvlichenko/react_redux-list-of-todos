@@ -17,7 +17,7 @@ export const App = () => {
       .then(data => {
         dispatch(todosActions.setTodos(data));
       })
-      .then(() => setLoader(false));
+      .finally(() => setLoader(false));
   }, []);
 
   return (
